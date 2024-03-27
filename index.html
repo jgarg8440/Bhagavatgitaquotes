@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="full-screen">
+      <div class="middle-part">
+        <div class="head">
+        <h1 >Bhagavad Gita</h1>
+        <p>"Reading the Bhagavad Gita is akin to embarking on a profound journey to discover the timeless wisdom that illuminates the path to self-realization and inner peace."</p>
+      </div>
+        <div class="main">
+          <div class="middle">
+            <p class="sloke"> Loading...</p>
+
+          </div>
+          <div class="middle">   
+            <p class="hindisloke"> Loading...</p>
+        </div>
+        </div>
+        <div class="main">
+            <div>
+            <div class="inp-div">
+            <div class="inp">
+              <input type="number" autocomplete="off" placeholder="Enter Chapter Number" id="searchch" min="1" inputmode="numeric">
+            </div>
+            <div class="inp">
+              <input type="number" autocomplete="off" placeholder="Enter Slok Number" id="searchsl" min="1" inputmode="numeric">
+            </div>
+        </div>
+          <div class="btn">
+            <button class="btnbutton">Generate</button>
+          </div>
+        
+        </div>
+          </div>
+
+
+      </div>
+    </div>
+
+    
+
+    <script>
+      const par = document.querySelector(".sloke");
+      const hindi = document.querySelector(".hindisloke");
+
+      const searchcha = document.querySelector("#searchch");
+      const searchslo = document.querySelector("#searchsl");
+      const btn = document.querySelector(".btnbutton");
+
+     
+      const api_url = "https://bhagavadgitaapi.in/slok/";
+
+      async function getsslock(searchcha, searchslo) {
+        const response = await fetch(`${api_url}${searchcha.value}/${searchslo.value}/`);
+    if (!response.ok) {
+        if (response.status === 404) {
+            par.innerHTML = "Chapter or sloka not found. Please enter correct values.";
+            hindi.innerHTML = "";
+        } else {
+            par.innerHTML = "An error occurred. Please try again later.";
+            hindi.innerHTML = "";
+        }
+    } else {
+        const data = await response.json();
+        par.innerHTML = data.slok;
+        hindi.innerHTML = data.chinmay.hc;
+    }
+
+
+      }
+
+      async function getssloc() {
+        const a = Math.floor(Math.random() * 18) + 1;
+      const b = Math.floor(Math.random() * 20) + 1;
+      const url = "https://bhagavadgitaapi.in/slok/" + a + "/" + b + "/";
+
+        const response = await fetch(url);
+        const data = await response.json();
+        par.innerHTML = data.slok;
+        hindi.innerHTML = data.chinmay.hc;
+      }
+
+      btn.addEventListener("click", () => {
+    if (searchcha.value === "" && searchslo.value === "") {
+      getssloc();
+    } else {
+      getsslock(searchcha, searchslo);
+    }
+  });
+  getssloc();
+  
+    </script>
+  </body>
+</html>
